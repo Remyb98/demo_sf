@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Tag;
 use App\Entity\Task;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,6 +22,15 @@ class TaskType extends AbstractType
             ->add('author', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username'
+            ])
+            // We can manage tags inside the task's form
+            // It's possible to change the expanded value to change the input type (select or checkboxes)
+            ->add('tags', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'by_reference' => false,
             ])
         ;
     }

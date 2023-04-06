@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -63,9 +64,15 @@ class Task
         return $this;
     }
 
+    #[Ignore]
     public function getAuthor(): ?User
     {
         return $this->author;
+    }
+
+    public function getAuthorUsername(): string
+    {
+        return $this->author->getUserIdentifier();
     }
 
     public function setAuthor(?User $author): self
@@ -78,9 +85,19 @@ class Task
     /**
      * @return Collection<int, Tag>
      */
+    #[Ignore]
     public function getTags(): Collection
     {
         return $this->tags;
+    }
+
+    public function getTagsName(): string
+    {
+        $string = "";
+        foreach ($this->getTags() as $tag) {
+            $string .= $tag->getName() . ",";
+        }
+        return substr($string, 0, -1);
     }
 
     public function addTag(Tag $tag): self

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Task>
@@ -37,6 +38,15 @@ class TaskRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByUser(UserInterface $user)
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.author = :author')
+            ->setParameter('author', $user)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

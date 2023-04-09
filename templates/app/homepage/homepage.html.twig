@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        {{ include("app/homepage/_homepage_user_view.html.twig") }}
+    {% else %}
+        {{ include("app/homepage/_homepage_guest_view.html.twig") }}
+    {% endif %}
+{% endblock %}
